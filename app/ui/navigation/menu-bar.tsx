@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, HeartIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import {ReactNode} from "react";
 
@@ -6,10 +6,10 @@ export function MenuBarHorizontal() {
 
     const iconSize = "size-8";
     const icons : {icon: ReactNode, page: string}[] = [
-        // {
-        //     icon: <BookmarkIcon className={ iconSize } />,
-        //     page: "saved-recipes",
-        // },
+        {
+            icon: <HeartIcon className={ iconSize } />,
+            page: "saved",
+        },
         {
             icon: <MagnifyingGlassIcon className={ iconSize } />,
             page: "browse",
