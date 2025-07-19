@@ -1,10 +1,13 @@
 "use client";
 
-import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
+import { EllipsisVerticalIcon  } from "@heroicons/react/24/solid";
+import { HeartIcon as EmptySaveIcon } from "@heroicons/react/24/outline";
+import { HeartIcon as FilledSaveIcon } from "@heroicons/react/24/solid";
 import { LargeRecipeImage, SmallRecipeImage } from "@/app/ui/content/recipe-image";
 import React from 'react';
 import {RecipeOverview} from "@/app/lib/recipeOverview";
 import Link from "next/link";
+import { isRecipeSaved, saveRecipe, removeRecipe } from "@/app/lib/savedRecipes";
 
 export type RecipeCardData = {
     recipe: RecipeOverview,
@@ -22,20 +25,23 @@ export function RecipeCardSmall({data}: { data: RecipeCardData }) {
 
 export function RecipeCardLarge({data, onOptionsClick}: { data: RecipeCardData, onOptionsClick?: () => void }) {
     return (
-        <Link href={"/recipes/" + data.recipe.recipe_id}>
-            <div className="flex flex-col">
+        <div className="flex flex-col">
+            <Link href={"/recipes/" + data.recipe.recipe_id}>
                 <LargeRecipeImage recipe_name={data.recipe.recipe_name} image_uri={data.recipe.image_uri}/>
-                <Body data={data} onOptionsClick={onOptionsClick}/>
-            </div>
-        </Link>
-    )
+            </Link>
+            <Body data={data} onOptionsClick={onOptionsClick}/>
+        </div>
+
+)
 }
 
 function Body({data, onOptionsClick}: { data: RecipeCardData, onOptionsClick?: () => void }) {
     return (
         <div className="flex flex-row">
-            <RecipeInfo data={data} />
-            { onOptionsClick != null ? <Icons onClick={onOptionsClick} /> : null }
+            <Link href={"/recipes/" + data.recipe.recipe_id}>
+                <RecipeInfo data={data} />
+            </Link>
+            <Icons data={data} onOptionsClick={onOptionsClick} />
         </div>
     )
 }
@@ -58,10 +64,39 @@ function RecipeText({data}: { data: RecipeCardData }) {
     )
 }
 
-function Icons({onClick}: {onClick: () => void}) {
+function Icons({data, onOptionsClick}: {data: RecipeCardData, onOptionsClick?: () => void}) {
+    const isSaved = isRecipeSaved(data.recipe.recipe_id);
+    const [saveButtonEnabled, setSaveButtonEnabled] = React.useState(isSaved);
+    const [isClient, setIsClient] = React.useState(false)
+    React.useEffect(() => {
+        setIsClient(true)
+    }, [])
+
     return (
         <div className="flex flex-row items-center">
-            <button onClick={onClick}><EllipsisVerticalIcon className="size-8" /></button>
+            <button
+                onClick={() => onSavedRecipePress(data.recipe.recipe_id, setSaveButtonEnabled)}>
+                {isClient && saveButtonEnabled ?
+                    <FilledSaveIcon className="size-8"/> :
+                    <EmptySaveIcon className="size-8"/>
+                }
+            </button>
+            { onOptionsClick != null ?
+                <button onClick={onOptionsClick}>
+                    <EllipsisVerticalIcon className="size-8"/>
+                </button> :
+                null
+            }
         </div>
     )
+}
+
+function onSavedRecipePress(recipe_id: number, setSaveButtonState: React.Dispatch<React.SetStateAction<boolean>>) {
+    if (isRecipeSaved(recipe_id)) {
+        removeRecipe(recipe_id)
+        setSaveButtonState(false)
+    } else {
+        saveRecipe(recipe_id)
+        setSaveButtonState(true)
+    }
 }
