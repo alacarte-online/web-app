@@ -9,7 +9,10 @@ export default async function SavedRecipesPage() {
    return (
         <div className="flex flex-col gap-2 bg-blackboard-500">
             <Header />
-            <RecipeList recipes={recipes} />
+            {recipes.length > 0 ?
+                <RecipeList recipes={recipes} /> :
+                <EmptyRecipeDisplay />
+            }
         </div>
     );
 }
@@ -40,6 +43,14 @@ function RecipeList({recipes} : {recipes: RecipeCardData[]}) {
     return (
         <div className="flex flex-col gap-2 grow md:grid md:grid-cols-2 lg:grid-cols-3">
             { recipes.map((recipe, count) => <RecipeCardLarge data={recipe} key={count} /> )}
+        </div>
+    )
+}
+
+function EmptyRecipeDisplay() {
+    return (
+        <div className="flex w-auto h-96 justify-center items-center text-2xl">
+            Saved recipes will appear here. Go find some!
         </div>
     )
 }
