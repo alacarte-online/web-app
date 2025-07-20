@@ -20,25 +20,25 @@ export function RecipeCardSmall({data}: { data: RecipeCardData }) {
     )
 }
 
-export function RecipeCardLarge({data, onOptionsClick}: { data: RecipeCardData, onOptionsClick?: () => void }) {
+export function RecipeCardLarge({data, onOptionsClick, onRecipeSaved}: { data: RecipeCardData, onOptionsClick?: () => void, onRecipeSaved?: (recipeId: number, isSaved: boolean) => void }) {
     return (
         <div className="flex flex-col">
             <Link href={"/recipes/" + data.recipe.recipe_id}>
                 <LargeRecipeImage recipe_name={data.recipe.recipe_name} image_uri={data.recipe.image_uri}/>
             </Link>
-            <Body data={data} onOptionsClick={onOptionsClick}/>
+            <Body data={data} onOptionsClick={onOptionsClick} onRecipeSaved={onRecipeSaved} />
         </div>
 
 )
 }
 
-function Body({data, onOptionsClick}: { data: RecipeCardData, onOptionsClick?: () => void }) {
+function Body({data, onOptionsClick, onRecipeSaved}: { data: RecipeCardData, onOptionsClick?: () => void, onRecipeSaved?: (recipeId: number, isSaved: boolean) => void }) {
     return (
         <div className="flex flex-row justify-between items-start">
             <Link href={"/recipes/" + data.recipe.recipe_id}>
                 <RecipeInfo data={data} />
             </Link>
-            <RecipeIcons recipe_id={data.recipe.recipe_id} styling={"p-2 pt-6"} onOptionsClick={onOptionsClick} />
+            <RecipeIcons recipe_id={data.recipe.recipe_id} styling={"p-2 pt-6"} onOptionsClick={onOptionsClick} onRecipeSaved={onRecipeSaved} />
         </div>
     )
 }

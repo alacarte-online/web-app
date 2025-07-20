@@ -5,7 +5,17 @@ import React from "react";
 import {EllipsisVerticalIcon, HeartIcon as FilledSaveIcon} from "@heroicons/react/24/solid";
 import {HeartIcon as EmptySaveIcon} from "@heroicons/react/24/outline";
 
-export function RecipeIcons({recipe_id, onOptionsClick, styling}: {recipe_id: number, onOptionsClick?: () => void, styling?: string}) {
+export function RecipeIcons({
+        recipe_id,
+        onOptionsClick,
+        onRecipeSaved,
+        styling
+    } : {
+        recipe_id: number,
+        onOptionsClick?: () => void,
+        onRecipeSaved?: (recipe: number, isSaved: boolean) => void,
+        styling?: string
+    }) {
     const isSaved = isRecipeSaved(recipe_id);
     const [saveButtonEnabled, setSaveButtonEnabled] = React.useState(isSaved);
     const [isClient, setIsClient] = React.useState(false)
@@ -14,9 +24,13 @@ export function RecipeIcons({recipe_id, onOptionsClick, styling}: {recipe_id: nu
     }, [])
 
     return (
-        <div className={`flex flex-row items-center ${styling}`}>
-            <button
-                onClick={() => onSavedRecipePress(recipe_id, setSaveButtonEnabled)}>
+        <div className={`flex flex-row items-center ${styling} ${recipe_id}`}>
+            <button className={`${recipe_id}`}
+                onClick={() => onSavedRecipePress(
+                    {recipe_id: recipe_id,
+                        onRecipeSaved: onRecipeSaved,
+                        setSaveButtonState: setSaveButtonEnabled})
+            }>
                 {isClient && saveButtonEnabled ?
                     <FilledSaveIcon className="size-8"/> :
                     <EmptySaveIcon className="size-8"/>
@@ -32,12 +46,23 @@ export function RecipeIcons({recipe_id, onOptionsClick, styling}: {recipe_id: nu
     )
 }
 
-function onSavedRecipePress(recipe_id: number, setSaveButtonState: React.Dispatch<React.SetStateAction<boolean>>) {
+function onSavedRecipePress(
+    {recipe_id, onRecipeSaved, setSaveButtonState}: {
+    recipe_id: number,
+    onRecipeSaved?: (recipe: number, isSaved: boolean) => void,
+    setSaveButtonState: React.Dispatch<React.SetStateAction<boolean>>
+}) {
     if (isRecipeSaved(recipe_id)) {
         removeRecipe(recipe_id)
         setSaveButtonState(false)
+        if(onRecipeSaved != null) {
+            onRecipeSaved(recipe_id, false);
+        }
     } else {
         saveRecipe(recipe_id)
         setSaveButtonState(true)
+        if(onRecipeSaved != null) {
+            onRecipeSaved(recipe_id, true);
+        }
     }
 }

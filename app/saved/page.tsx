@@ -1,19 +1,14 @@
-import {RecipeCardData, RecipeCardLarge} from "@/app/ui/content/recipe-card";
+import {RecipeCardData} from "@/app/ui/content/recipe-card";
 import {RecipeOverview} from "@/app/lib/recipeOverview";
 import {cookies} from "next/headers";
+import {SavedRecipesCardList} from "@/app/saved/savedRecipeCardList";
 
 export const dynamic = 'force-dynamic'
 
 export default async function SavedRecipesPage() {
     const recipes = await GetSavedRecipeData();
-   return (
-        <div className="flex flex-col gap-2 bg-blackboard-500">
-            <Header />
-            {recipes.length > 0 ?
-                <RecipeList recipes={recipes} /> :
-                <EmptyRecipeDisplay />
-            }
-        </div>
+    return (
+        <SavedRecipesCardList initialRecipes={recipes} />
     );
 }
 
@@ -29,28 +24,4 @@ async function GetSavedRecipeData(): Promise<RecipeCardData[]> {
     const recipeResponsesJson = recipeResponses.map(res => res.json());
     const recipeOverviews: RecipeOverview[] = await Promise.all(recipeResponsesJson);
     return recipeOverviews.map((recipe: RecipeOverview): RecipeCardData => { return {recipe: recipe, byCurrentUser: false } })
-}
-
-function Header() {
-    return(
-        <div className="flex flex-row items-center w-full">
-            <h2 className="text-2xl w-full">Saved recipes</h2>
-        </div>
-    )
-}
-
-function RecipeList({recipes} : {recipes: RecipeCardData[]}) {
-    return (
-        <div className="flex flex-col gap-2 grow md:grid md:grid-cols-2 lg:grid-cols-3">
-            { recipes.map((recipe, count) => <RecipeCardLarge data={recipe} key={count} /> )}
-        </div>
-    )
-}
-
-function EmptyRecipeDisplay() {
-    return (
-        <div className="flex w-auto h-96 justify-center items-center text-2xl">
-            Saved recipes will appear here. Go find some!
-        </div>
-    )
 }
