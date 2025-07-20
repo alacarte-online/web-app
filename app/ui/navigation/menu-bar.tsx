@@ -1,17 +1,24 @@
-import { MagnifyingGlassIcon, HeartIcon } from "@heroicons/react/24/outline";
+"use client";
+
+import {HeartIcon as FilledSaveIcon} from "@heroicons/react/24/solid";
+import {HeartIcon as EmptySaveIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
-import {ReactNode} from "react";
+import {ReactNode, useEffect} from "react";
+import { usePathname } from 'next/navigation'
 
 export function MenuBarHorizontal() {
-
+    const pathname = usePathname()
+    useEffect(() => {
+        console.log(pathname);
+    }, [pathname]);
     const iconSize = "size-8";
     const icons : {icon: ReactNode, page: string}[] = [
         {
-            icon: <HeartIcon className={ iconSize } />,
+            icon: pathname.startsWith("/saved") ? <FilledSaveIcon className={ iconSize } /> : <EmptySaveIcon className={ iconSize } />,
             page: "saved",
         },
         {
-            icon: <MagnifyingGlassIcon className={ iconSize } />,
+            icon: pathname.startsWith("/browse") ? <MagnifyingGlassIcon className={ `${iconSize} stroke-[3]` } /> : <MagnifyingGlassIcon className={ `${iconSize} stroke-1` } />,
             page: "browse",
         },
         // {
