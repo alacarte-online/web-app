@@ -37,7 +37,7 @@ export function RecipeCardLarge({data, onOptionsClick}: { data: RecipeCardData, 
 
 function Body({data, onOptionsClick}: { data: RecipeCardData, onOptionsClick?: () => void }) {
     return (
-        <div className="flex flex-row">
+        <div className="flex flex-row justify-between items-start">
             <Link href={"/recipes/" + data.recipe.recipe_id}>
                 <RecipeInfo data={data} />
             </Link>
@@ -73,7 +73,7 @@ function Icons({data, onOptionsClick}: {data: RecipeCardData, onOptionsClick?: (
     }, [])
 
     return (
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center p-2 pt-6">
             <button
                 onClick={() => onSavedRecipePress(data.recipe.recipe_id, setSaveButtonEnabled)}>
                 {isClient && saveButtonEnabled ?
