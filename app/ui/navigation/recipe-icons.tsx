@@ -17,7 +17,9 @@ export function RecipeIcons({
         styling?: string
     }) {
     const isSaved = isRecipeSaved(recipe_id);
-    const [saveButtonEnabled, setSaveButtonEnabled] = React.useState(isSaved);
+    const saveButtonState = React.useState(isSaved);
+    const saveButtonEnabled = isSaved;
+    const setSaveButtonEnabled = saveButtonState[1];
     const [isClient, setIsClient] = React.useState(false)
     React.useEffect(() => {
         setIsClient(true)
