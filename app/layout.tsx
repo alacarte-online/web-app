@@ -23,16 +23,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
     const isDesktopWidth = 800;
-    const [isDesktop, setDesktop] = useState(window.innerWidth > isDesktopWidth);
+    const [isDesktop, setDesktop] = useState(false);
 
     const updateMedia = () => {
         setDesktop(window.innerWidth > isDesktopWidth);
     };
-
     useEffect(() => {
+        setDesktop(window.innerWidth > isDesktopWidth);
         window.addEventListener("resize", updateMedia);
         return () => window.removeEventListener("resize", updateMedia);
-    });
+    }, [setDesktop]);
 
   return (
     <html lang="en">
