@@ -41,7 +41,7 @@ export function MenuBarVertical() {
     ]
 
     return (
-        <div className="flex flex-col h-full p-2 bg-blackboard-500">
+        <div className="flex flex-col h-full p-2 pt-0 bg-blackboard-500">
             {menuEntries.map((element) => IconHeaderLink(element))}
         </div>
     )

@@ -37,17 +37,30 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        id="root" className={`${excalifont.className} antialiased flex ${isDesktop ? `flex-row` : `flex-col`} m-2 max-w-screen bg-blackboard-500`}
+        id="root" className={`${excalifont.className} antialiased m-2 max-w-screen bg-blackboard-500`}
       >
-      { isDesktop ? <MenuBarVertical /> : null }
-        <div className="overflow-y-auto flex-col">
-            {children}
-        </div>
-      {!isDesktop ?
-          <div className="sticky bottom-0 w-full">
-            <MenuBarHorizontal/>
-        </div> : null}
+      <TitleBar isDesktop={isDesktop}/>
+      <div className={`flex ${isDesktop ? `flex-row` : `flex-col`}`}>
+          {isDesktop ? <MenuBarVertical/> : null}
+
+          <div className="overflow-y-auto flex-col">
+              {children}
+          </div>
+
+          {!isDesktop ?
+              <div className="sticky bottom-0 w-full">
+                  <MenuBarHorizontal/>
+              </div> : null}
+      </div>
       </body>
     </html>
   );
+}
+
+function TitleBar({isDesktop}: {isDesktop: boolean}) {
+    return (
+        <div className={`${isDesktop ? `` : `hidden`} w-screen text-4xl p-2 ml-2 mb-2`}>
+            Alacarte
+        </div>
+    )
 }
