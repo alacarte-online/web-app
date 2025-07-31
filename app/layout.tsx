@@ -36,7 +36,12 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body
+    <head>
+        <title>
+            Alacarte
+        </title>
+    </head>
+    <body
         id="root" className={`${excalifont.className} antialiased m-2 max-w-screen bg-blackboard-500`}
       >
       <TitleBar isDesktop={isDesktop}/>
