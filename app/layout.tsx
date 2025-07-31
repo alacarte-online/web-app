@@ -40,6 +40,12 @@ export default function RootLayout({
         <title>
             Alacarte
         </title>
+        <link
+            rel="icon"
+            href="/icon?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+        />
     </head>
     <body
         id="root" className={`${excalifont.className} antialiased m-2 max-w-screen bg-blackboard-500`}
