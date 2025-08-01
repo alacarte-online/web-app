@@ -4,7 +4,7 @@ import {HeartIcon as FilledSaveIcon} from "@heroicons/react/24/solid";
 import {HeartIcon as EmptySaveIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import {ReactNode, useEffect} from "react";
-import { usePathname } from 'next/navigation'
+import {usePathname} from 'next/navigation'
 
 export function MenuBarHorizontal() {
     const pathname = usePathname()
