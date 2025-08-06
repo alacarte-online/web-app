@@ -2,7 +2,7 @@
 
 import localFont from "next/font/local";
 import "./globals.css";
-import {MenuBarHorizontal} from "@/app/ui/navigation/menu-bar-horizontal";
+import MenuBarHorizontal from "@/app/ui/navigation/menu-bar-horizontal";
 import {useEffect, useState} from "react";
 import MenuBarVertical from "@/app/ui/navigation/menuBarVertical";
 import {AppRouterCacheProvider} from '@mui/material-nextjs/v15-appRouter';

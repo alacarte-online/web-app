@@ -1,47 +1,34 @@
-"use client";
+import * as React from 'react';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import Paper from '@mui/material/Paper';
+import {usePathname} from "next/navigation";
+import {MagnifyingGlassIcon} from "@/app/ui/icons/magnifyingGlass";
+import {HeartIconOutline, HeartIconSolid} from "@/app/ui/icons/heart";
+import {ReactNode} from "react";
+import Link from 'next/link';
 
-import {HeartIcon as FilledSaveIcon} from "@heroicons/react/24/solid";
-import {HeartIcon as EmptySaveIcon, MagnifyingGlassIcon} from "@heroicons/react/24/outline";
-import Link from "next/link";
-import {ReactNode, useEffect} from "react";
-import {usePathname} from 'next/navigation'
-
-export function MenuBarHorizontal() {
+export default function MenuBarHorizontal() {
+    type iconDetails = {name: string, displayText: string, icon: ReactNode, linkUrl: string};
     const pathname = usePathname()
-    useEffect(() => {
-        console.log(pathname);
-    }, [pathname]);
-    const iconSize = "size-8";
-    const icons : {icon: ReactNode, page: string}[] = [
-        {
-            icon: pathname.startsWith("/saved") ? <FilledSaveIcon className={ iconSize } /> : <EmptySaveIcon className={ iconSize } />,
-            page: "saved",
-        },
-        {
-            icon: pathname.startsWith("/browse") ? <MagnifyingGlassIcon className={ `${iconSize} stroke-[3]` } /> : <MagnifyingGlassIcon className={ `${iconSize} stroke-1` } />,
-            page: "browse",
-        },
-        // {
-        //     icon: <BookOpenIcon className={ iconSize } />,
-        //     page: "menu",
-        // },
-        // {
-        //     icon: <UserCircleIcon className={ iconSize } />,
-        //     page: "user",
-        // }
-    ]
+    const browseIcon = <MagnifyingGlassIcon />
+    const savedIcon = pathname.startsWith("/saved") ? <HeartIconSolid /> : <HeartIconOutline />;
+    const browseIconDetails: iconDetails = {name: "browse", displayText: "Browse", icon: browseIcon, linkUrl: "/browse"}
+    const savedIconDetails: iconDetails = {name: "saved", displayText: "Saved", icon: savedIcon, linkUrl: "/saved"}
 
+    const icons = [savedIconDetails, browseIconDetails]
     return (
-        <div className="flex flex-row justify-evenly w-full p-2 bg-blackboard-500">
-            { icons.map((element) => IconLink(element)) }
-        </div>
-    )
-}
-
-function IconLink({icon, page} : {icon: ReactNode, page: string}) {
-    return(
-        <Link href={`/${page}`} key={page}>
-            {icon}
-        </Link>
-    )
+        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+            <BottomNavigation>
+                {icons.map(details => (
+                    <BottomNavigationAction
+                        key={details.name}
+                        component={Link}
+                        href={details.linkUrl}
+                        label={details.displayText}
+                        icon={details.icon} />
+                ))}
+            </BottomNavigation>
+        </Paper>
+    );
 }
