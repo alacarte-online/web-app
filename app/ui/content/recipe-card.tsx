@@ -1,34 +1,25 @@
 "use client";
 
-import { LargeRecipeImage, SmallRecipeImage } from "@/app/ui/content/recipe-image";
+import { LargeRecipeImage } from "@/app/ui/content/recipe-image";
 import React from 'react';
 import {RecipeOverview} from "@/app/lib/recipeOverview";
 import Link from "next/link";
 import {RecipeIcons} from "@/app/ui/navigation/recipe-icons";
+import {Card} from "@mui/material";
 
 export type RecipeCardData = {
     recipe: RecipeOverview,
     byCurrentUser: boolean
 }
 
-export function RecipeCardSmall({data}: { data: RecipeCardData }) {
-    return (
-        <div className="flex flex-row w-full bg-blackboard-500">
-            <SmallRecipeImage recipe={data.recipe} />
-            <Body data={data} />
-        </div>
-    )
-}
-
 export function RecipeCardLarge({data, onOptionsClick, onRecipeSaved}: { data: RecipeCardData, onOptionsClick?: () => void, onRecipeSaved?: (recipeId: number, isSaved: boolean) => void }) {
     return (
-        <div className="flex flex-col">
+        <Card className="flex flex-col">
             <Link href={"/recipes/" + data.recipe.recipe_id}>
                 <LargeRecipeImage recipe_name={data.recipe.recipe_name} image_uri={data.recipe.image_uri}/>
             </Link>
             <Body data={data} onOptionsClick={onOptionsClick} onRecipeSaved={onRecipeSaved} />
-        </div>
-
+        </Card>
 )
 }
 
