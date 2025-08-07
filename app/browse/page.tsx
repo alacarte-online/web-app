@@ -17,7 +17,7 @@ export default async function BrowseRecipesPage() {
 
 function Header() {
     return(
-        <div className="flex flex-row items-center w-full">
+        <div className="flex flex-row items-center w-full md:hidden">
             <h2 className="text-2xl w-full">Browse recipes</h2>
         </div>
     )

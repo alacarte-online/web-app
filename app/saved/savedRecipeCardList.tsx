@@ -17,21 +17,12 @@ export function SavedRecipesCardList({initialRecipes}: { initialRecipes: RecipeC
     }, [savedRecipes])
     return (
         <div className="flex flex-col gap-2 bg-blackboard-500">
-            <Header />
             {savedRecipes.length > 0 ?
                 <RecipeList recipes={savedRecipes} onRecipeSaved={onRecipeUnsaved} /> :
                 <EmptyRecipeDisplay />
             }
         </div>
     );
-}
-
-function Header() {
-    return(
-        <div className="flex flex-row items-center w-full">
-            <h2 className="text-2xl w-full">Saved recipes</h2>
-        </div>
-    )
 }
 
 function RecipeList({recipes, onRecipeSaved} : {recipes: RecipeCardData[], onRecipeSaved: (recipeId: number, isSaved: boolean) => void}) {

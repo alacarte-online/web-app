@@ -2,14 +2,28 @@ import {RecipeCardData} from "@/app/ui/content/recipe-card";
 import {RecipeOverview} from "@/app/lib/recipeOverview";
 import {cookies} from "next/headers";
 import {SavedRecipesCardList} from "@/app/saved/savedRecipeCardList";
+import React from "react";
 
 export const dynamic = 'force-dynamic'
 
 export default async function SavedRecipesPage() {
     const recipes = await GetSavedRecipeData();
     return (
-        <SavedRecipesCardList initialRecipes={recipes} />
-    );
+        <div className="flex flex-col gap-2">
+            <Header />
+            <SavedRecipesCardList initialRecipes={recipes}/>
+        </div>
+
+)
+    ;
+}
+
+function Header() {
+    return (
+        <div className="flex flex-row items-center w-full md:hidden">
+            <h2 className="text-2xl w-full">Saved recipes</h2>
+        </div>
+    )
 }
 
 async function GetSavedRecipeData(): Promise<RecipeCardData[]> {
