@@ -4,10 +4,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 import MenuBarHorizontal from "@/app/ui/navigation/menu-bar-horizontal";
 import {useEffect, useState} from "react";
-import MenuBarVertical from "@/app/ui/navigation/menuBarVertical";
+import DesktopAppBar from "@/app/ui/navigation/desktopAppBar";
 import {AppRouterCacheProvider} from '@mui/material-nextjs/v15-appRouter';
 import {theme} from "@/app/theme";
-import { ThemeProvider } from '@mui/material/styles';
+import {styled, ThemeProvider} from '@mui/material/styles';
 
 const excalifont = localFont({
     src: [
@@ -27,6 +27,8 @@ export default function RootLayout({
 }>) {
     const isDesktopWidth = 800;
     const [isDesktop, setDesktop] = useState(false);
+
+    const DesktopToolbarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
     const updateMedia = () => {
         setDesktop(window.innerWidth > isDesktopWidth);
@@ -55,16 +57,16 @@ export default function RootLayout({
         >
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={theme}>
-                <TitleBar isDesktop={isDesktop}/>
                 <div className={`flex ${isDesktop ? `flex-row` : `flex-col`}`}>
-                    {isDesktop ? <MenuBarVertical/> : null}
+                    {isDesktop ? <DesktopAppBar/> : null}
 
                     <div className="overflow-y-auto flex-col">
+                        {isDesktop ? <DesktopToolbarOffset /> : null}
                         {children}
                     </div>
 
                     {!isDesktop ?
-                        <div className="sticky bottom-0 w-full">
+                        <div className="bottom-0 w-full">
                             <MenuBarHorizontal/>
                         </div> : null}
                 </div>
@@ -73,12 +75,4 @@ export default function RootLayout({
         </body>
         </html>
     );
-}
-
-function TitleBar({isDesktop}: { isDesktop: boolean }) {
-    return (
-        <div className={`${isDesktop ? `` : `hidden`} w-screen text-4xl p-2 ml-2 mb-2`}>
-            Alacarte
-        </div>
-    )
 }

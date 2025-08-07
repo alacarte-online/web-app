@@ -4,6 +4,7 @@ import * as React from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
@@ -20,8 +21,10 @@ import {HeartIconOutline, HeartIconSolid} from "@/app/ui/icons/heart";
 import {MagnifyingGlassIcon} from "@/app/ui/icons/magnifyingGlass";
 import {usePathname} from "next/navigation";
 import {ReactNode} from "react";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 type iconDetails = {name: string, displayText: string, icon: ReactNode, linkUrl: string};
 
@@ -37,6 +40,33 @@ const closedMixin = (theme: Theme): CSSObject => ({
         width: `calc(${theme.spacing(8)} + 1px)`,
     },
 });
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    variants: [
+        {
+            props: ({ open }) => open,
+            style: {
+                marginLeft: 0,
+                width: `calc(100% - ${0}px)`,
+                transition: theme.transitions.create(['width', 'margin'], {
+                    easing: theme.transitions.easing.sharp,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+            },
+        },
+    ],
+}));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme }) => ({
@@ -63,7 +93,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-export default function MenuBarVertical() {
+export default function DesktopAppBar() {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -86,6 +116,10 @@ export default function MenuBarVertical() {
         setOpen(false);
     };
 
+    const handleToggleDrawer = () => {
+        setOpen(!open);
+    };
+
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
@@ -98,6 +132,26 @@ export default function MenuBarVertical() {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
+            <AppBar open={open}>
+                <Toolbar className="gap-4">
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleToggleDrawer}
+                        edge="start"
+                        sx={[
+                            {
+                                marginRight: 5,
+                            }
+                        ]}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" component="div" className="font-bold">
+                        Alacarte
+                    </Typography>
+                </Toolbar>
+            </AppBar>
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
                     <IconButton
