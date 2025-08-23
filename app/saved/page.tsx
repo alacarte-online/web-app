@@ -1,4 +1,3 @@
-import {RecipeCardData} from "@/app/ui/content/recipe-card";
 import {RecipeOverview} from "@/app/lib/recipeOverview";
 import {cookies} from "next/headers";
 import {SavedRecipesCardList} from "@/app/saved/savedRecipeCardList";
@@ -14,9 +13,7 @@ export default async function SavedRecipesPage() {
             <Header />
             <SavedRecipesCardList initialRecipes={recipes}/>
         </div>
-
-)
-    ;
+    );
 }
 
 function Header() {
