@@ -3,7 +3,7 @@ import {RecipeOverview} from "@/app/lib/recipeOverview";
 import {cookies} from "next/headers";
 import {SavedRecipesCardList} from "@/app/saved/savedRecipeCardList";
 import React from "react";
-import MobileHeader from "@/app/ui/navigation/mobileHeader";
+import MobileHeader, {MobileHeaderHeightOffset} from "@/app/ui/navigation/mobileHeader";
 
 export const dynamic = 'force-dynamic'
 
@@ -21,7 +21,10 @@ export default async function SavedRecipesPage() {
 
 function Header() {
     return (
-        <MobileHeader title="Saved recipes"/>
+        <div className="md:hidden">
+            <MobileHeader title="Saved recipes"/>
+            <div className={`${MobileHeaderHeightOffset}`}/>
+        </div>
     )
 }
 

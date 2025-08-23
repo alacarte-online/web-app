@@ -1,6 +1,6 @@
 import {RecipeCardLarge} from "@/app/ui/content/recipe-card";
 import {RecipeOverview} from "@/app/lib/recipeOverview";
-import MobileHeader from "@/app/ui/navigation/mobileHeader";
+import MobileHeader, {MobileHeaderHeightOffset} from "@/app/ui/navigation/mobileHeader";
 import React from "react";
 
 export const dynamic = 'force-dynamic'
@@ -18,7 +18,10 @@ export default async function BrowseRecipesPage() {
 
 function Header() {
     return (
-        <MobileHeader title="Browse recipes"/>
+        <div className="md:hidden">
+            <MobileHeader title="Browse recipes"/>
+            <div className={`${MobileHeaderHeightOffset}`} />
+        </div>
     )
 }
 
