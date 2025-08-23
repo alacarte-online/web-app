@@ -38,7 +38,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
     width: `calc(${theme.spacing(7)} + 1px)`,
     [theme.breakpoints.up('sm')]: {
         width: `calc(${theme.spacing(8)} + 1px)`,
-    },
+    }
 });
 
 interface AppBarProps extends MuiAppBarProps {
@@ -53,6 +53,7 @@ const AppBar = styled(MuiAppBar, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
+    boxShadow: theme.shadows[0],
     variants: [
         {
             props: ({ open }) => open,
@@ -131,9 +132,8 @@ export default function DesktopAppBar() {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar open={open}>
-                <Toolbar className="gap-4">
+            <AppBar open={open} sx={{bgcolor: 'secondary.main', color: 'primary.main'}}>
+                <Toolbar className="gap-4 border-b-[2px] border-blackboard-500">
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -147,87 +147,92 @@ export default function DesktopAppBar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" className="font-bold">
+                    <Typography variant="h4" component="div" className="font-semibold">
                         Alacarte
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        // edge="start"
-                        sx={[
-                            open && { display: 'none' },
-                        ]}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <IconButton onClick={handleDrawerClose} sx={[
-                        !open && { display: 'none' },
-                    ]}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    {[browseIconDetails, savedIconDetails].map(iconDetails => (
-                        <ListItem key={iconDetails.linkUrl} disablePadding sx={{ display: 'block'}}>
-                            <Link href={iconDetails.linkUrl}>
-                                <ListItemButton
-                                    selected={selected == iconDetails.name}
-                                    onClick={() => setSelected(iconDetails.name)}
-                                    sx={[
-                                        {
-                                            minHeight: 48,
-                                            px: 2.5,
-                                        },
-                                        open
-                                            ? {
-                                                justifyContent: 'initial',
-                                            }
-                                            : {
-                                                justifyContent: 'center',
-                                            },
-                                    ]}
-                                >
-                                    <ListItemIcon
+            <div className="">
+                <Drawer variant="permanent" open={open} sx={{
+                    '& .MuiDrawer-paper': {
+                        bgcolor: 'secondary.main'
+                    },
+                }}>
+                    <DrawerHeader>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            // edge="start"
+                            sx={[
+                                open && { display: 'none' },
+                            ]}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <IconButton onClick={handleDrawerClose} sx={[
+                            !open && { display: 'none' },
+                        ]}>
+                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        </IconButton>
+                    </DrawerHeader>
+                    <List>
+                        {[browseIconDetails, savedIconDetails].map(iconDetails => (
+                            <ListItem key={iconDetails.linkUrl} disablePadding sx={{ display: 'block'}}>
+                                <Link href={iconDetails.linkUrl}>
+                                    <ListItemButton
+                                        selected={selected == iconDetails.name}
+                                        onClick={() => setSelected(iconDetails.name)}
                                         sx={[
                                             {
-                                                minWidth: 0,
-                                                justifyContent: 'center',
+                                                minHeight: 48,
+                                                px: 2.5,
                                             },
                                             open
                                                 ? {
-                                                    mr: 3,
+                                                    justifyContent: 'initial',
                                                 }
                                                 : {
-                                                    mr: 'auto',
+                                                    justifyContent: 'center',
                                                 },
                                         ]}
                                     >
-                                        {iconDetails.icon}
-                                    </ListItemIcon>
-                                    <ListItemText
-                                        primary={iconDetails.displayText}
-                                        sx={[
-                                            open
-                                                ? {
-                                                    opacity: 1,
-                                                }
-                                                : {
-                                                    opacity: 0,
+                                        <ListItemIcon
+                                            sx={[
+                                                {
+                                                    minWidth: 0,
+                                                    justifyContent: 'center'
                                                 },
-                                        ]}
-                                    />
-                                </ListItemButton>
-                            </Link>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
+                                                open
+                                                    ? {
+                                                        mr: 3,
+                                                    }
+                                                    : {
+                                                        mr: 'auto',
+                                                    },
+                                            ]}
+                                        >
+                                            {iconDetails.icon}
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={iconDetails.displayText}
+                                            sx={[
+                                                open
+                                                    ? {
+                                                        opacity: 1,
+                                                    }
+                                                    : {
+                                                        opacity: 0,
+                                                    },
+                                            ]}
+                                        />
+                                    </ListItemButton>
+                                </Link>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
+            </div>
         </Box>
     );
 }

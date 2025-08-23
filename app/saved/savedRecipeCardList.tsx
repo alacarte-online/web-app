@@ -2,6 +2,8 @@
 
 import {RecipeCardData, RecipeCardLarge} from "@/app/ui/content/recipe-card";
 import React, {useCallback, useState} from "react";
+import {Card} from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 export function SavedRecipesCardList({initialRecipes}: { initialRecipes: RecipeCardData[] }) {
     const [savedRecipes, setSavedRecipes] = useState(initialRecipes);
@@ -16,7 +18,7 @@ export function SavedRecipesCardList({initialRecipes}: { initialRecipes: RecipeC
         }
     }, [savedRecipes])
     return (
-        <div className="flex flex-col gap-2 bg-blackboard-500">
+        <div className="flex flex-col gap-2">
             {savedRecipes.length > 0 ?
                 <RecipeList recipes={savedRecipes} onRecipeSaved={onRecipeUnsaved} /> :
                 <EmptyRecipeDisplay />
@@ -35,8 +37,10 @@ function RecipeList({recipes, onRecipeSaved} : {recipes: RecipeCardData[], onRec
 
 function EmptyRecipeDisplay() {
     return (
-        <div className="flex w-auto h-96 justify-center items-center text-2xl">
-            Saved recipes will appear here. Go find some!
-        </div>
+        <Card className="bg-secondary w-auto h-auto p-12">
+            <Typography component="div" className="font-semibold text-2xl text-primary">
+                Saved recipes will appear here. Go find some!
+            </Typography>
+        </Card>
     )
 }

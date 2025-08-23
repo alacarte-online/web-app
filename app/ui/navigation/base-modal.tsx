@@ -22,7 +22,7 @@ export function BaseModal({isOpen, setIsOpenAction, entries} : {isOpen: boolean,
             isOpen={isOpen}
             onRequestClose={closeModal}
             contentLabel="Example Modal"
-            className="bg-blackboard-500 w-full absolute bottom-0"
+            className="w-full absolute bottom-0"
         >
             <div className="flex flex-col w-full gap-2 m-2">
                 <DragHandle />

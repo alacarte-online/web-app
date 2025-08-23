@@ -26,7 +26,8 @@ export default function MenuBarHorizontal() {
                         component={Link}
                         href={details.linkUrl}
                         label={details.displayText}
-                        icon={details.icon} />
+                        icon={details.icon}
+                    />
                 ))}
             </BottomNavigation>
         </Paper>

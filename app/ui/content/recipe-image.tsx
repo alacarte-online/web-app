@@ -12,7 +12,7 @@ export function LargeRecipeImage({recipe_name, image_uri}: { recipe_name: string
         <Image
             src={imageError ? fallbackSrc : `https://api.alacarteonline.co.uk/image/${image_uri}` }
             alt={`Image of ${recipe_name}`}
-            className={`${imageError ? `object-contain` : `object-cover`} object-center aspect-recipe-card-large rounded-lg`}
+            className={`${imageError ? `object-contain` : `object-cover`} object-center aspect-recipe-card-large`}
             height={600} // TODO optimize with sizes
             width={600}
             onError={() => setImageError(true)}

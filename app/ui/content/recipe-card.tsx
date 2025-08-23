@@ -6,6 +6,7 @@ import {RecipeOverview} from "@/app/lib/recipeOverview";
 import Link from "next/link";
 import {RecipeIcons} from "@/app/ui/navigation/recipe-icons";
 import {Card} from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 export type RecipeCardData = {
     recipe: RecipeOverview,
@@ -14,18 +15,18 @@ export type RecipeCardData = {
 
 export function RecipeCardLarge({data, onOptionsClick, onRecipeSaved}: { data: RecipeCardData, onOptionsClick?: () => void, onRecipeSaved?: (recipeId: number, isSaved: boolean) => void }) {
     return (
-        <Card className="flex flex-col">
-            <Link href={"/recipes/" + data.recipe.recipe_id}>
-                <LargeRecipeImage recipe_name={data.recipe.recipe_name} image_uri={data.recipe.image_uri}/>
-            </Link>
-            <Body data={data} onOptionsClick={onOptionsClick} onRecipeSaved={onRecipeSaved} />
+        <Card className="border-[2px] border-primary bg-secondary text-primary">
+                <Link href={"/recipes/" + data.recipe.recipe_id}>
+                    <LargeRecipeImage recipe_name={data.recipe.recipe_name} image_uri={data.recipe.image_uri}/>
+                </Link>
+                <Body data={data} onOptionsClick={onOptionsClick} onRecipeSaved={onRecipeSaved} />
         </Card>
 )
 }
 
 function Body({data, onOptionsClick, onRecipeSaved}: { data: RecipeCardData, onOptionsClick?: () => void, onRecipeSaved?: (recipeId: number, isSaved: boolean) => void }) {
     return (
-        <div className="flex flex-row justify-between items-start">
+        <div className="flex flex-row justify-between items-start p-1">
             <Link href={"/recipes/" + data.recipe.recipe_id}>
                 <RecipeInfo data={data} />
             </Link>
@@ -44,10 +45,9 @@ function RecipeInfo({data}: { data: RecipeCardData }) {
 
 function RecipeText({data}: { data: RecipeCardData }) {
     return (
-        <div className="flex flex-col">
-          <h3 className="text-lg">{data.recipe.recipe_name}</h3>
-          <p>{data.recipe.brief_description}</p>
+        <Typography component="div" className="flex flex-col">
+          <h3 className="text-2xl font-medium">{data.recipe.recipe_name}</h3>
           <p>{data.recipe.user_name}</p>
-        </div>
+        </Typography>
     )
 }

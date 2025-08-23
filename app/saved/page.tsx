@@ -3,6 +3,7 @@ import {RecipeOverview} from "@/app/lib/recipeOverview";
 import {cookies} from "next/headers";
 import {SavedRecipesCardList} from "@/app/saved/savedRecipeCardList";
 import React from "react";
+import MobileHeader from "@/app/ui/navigation/mobileHeader";
 
 export const dynamic = 'force-dynamic'
 
@@ -20,9 +21,7 @@ export default async function SavedRecipesPage() {
 
 function Header() {
     return (
-        <div className="flex flex-row items-center w-full md:hidden">
-            <h2 className="text-2xl w-full">Saved recipes</h2>
-        </div>
+        <MobileHeader title="Saved recipes"/>
     )
 }
 
