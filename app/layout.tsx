@@ -8,6 +8,11 @@ import {AppRouterCacheProvider} from '@mui/material-nextjs/v15-appRouter';
 import {theme} from "@/app/theme";
 import {styled, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import {Oswald} from 'next/font/google';
+
+const oswald = Oswald({
+    subsets: ['latin'],
+})
 
 export default function RootLayout({
                                        children,
@@ -31,7 +36,7 @@ export default function RootLayout({
     }, [setDesktop]);
 
     return (
-        <html lang="en">
+        <html lang={`en ${oswald.className}`}>
         <head>
             <title>
                 Alacarte
@@ -44,9 +49,6 @@ export default function RootLayout({
             />
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
-            <link
-                href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Pacifico&display=swap"
-                rel="stylesheet"/>
         </head>
         <body
             id="root" className="antialiased m-2 max-w-screen bg-background"
