@@ -25,7 +25,7 @@ function Header() {
     )
 }
 
-async function GetSavedRecipeData(): Promise<RecipeCardData[]> {
+async function GetSavedRecipeData(): Promise<RecipeOverview[]> {
     const cookieStore = await cookies()
     const savedRecipesCookie = cookieStore.get('saved_recipes')
     if (savedRecipesCookie === undefined) {
@@ -35,6 +35,5 @@ async function GetSavedRecipeData(): Promise<RecipeCardData[]> {
     const recipeRequests = savedRecipes.map(id => fetch('https://api.alacarteonline.co.uk/recipe/' + id))
     const recipeResponses = await Promise.all(recipeRequests);
     const recipeResponsesJson = recipeResponses.map(res => res.json());
-    const recipeOverviews: RecipeOverview[] = await Promise.all(recipeResponsesJson);
-    return recipeOverviews.map((recipe: RecipeOverview): RecipeCardData => { return {recipe: recipe, byCurrentUser: false } })
+    return await Promise.all(recipeResponsesJson);
 }

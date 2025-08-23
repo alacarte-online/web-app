@@ -4,8 +4,8 @@ import {Ingredient} from "@/app/lib/ingredient";
 import DOMPurify from "isomorphic-dompurify";
 
 import showdown from "showdown";
-import {RecipeIcons} from "@/app/ui/navigation/recipe-icons";
 import Typography from "@mui/material/Typography";
+import {SaveButton} from "@/app/ui/buttons/saveButton";
 
 export const dynamic = 'force-dynamic'
 
@@ -45,7 +45,7 @@ function RecipeThumbnail({recipe_details}: { recipe_details: RecipeDetails }) {
 function RecipeBody({recipe_details}: { recipe_details: RecipeDetails }) {
     return (
         <div className="flex flex-col gap-4">
-            <RecipeIcons styling={"p-2 pt-6"} recipe_id={recipe_details.recipe_id} />
+            <SaveButton recipeId={recipe_details.recipe_id} />
             <IngredientsList ingredients={recipe_details.ingredients} />
             <Method recipe_details={recipe_details}/>
         </div>
