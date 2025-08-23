@@ -8,11 +8,6 @@ import {Card} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {SaveButton} from "@/app/ui/buttons/saveButton";
 
-export type RecipeCardData = {
-    recipe: RecipeOverview,
-    byCurrentUser: boolean
-}
-
 export type RecipeCardProps = {
     recipe: RecipeOverview,
     style?: string,
