@@ -18,6 +18,8 @@ export default function RootLayout({
     const [isDesktop, setDesktop] = useState(false);
 
     const DesktopToolbarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
+    const defaultMobileBottomNavHeight: string = '49px';
+    const MobileBottomNavigationOffset = styled('div')({ height: defaultMobileBottomNavHeight });
 
     const updateMedia = () => {
         setDesktop(window.innerWidth > isDesktopWidth);
@@ -62,6 +64,7 @@ export default function RootLayout({
 
                     {!isDesktop ?
                         <div className="bottom-0 w-full">
+                            <MobileBottomNavigationOffset />
                             <MenuBarHorizontal/>
                         </div> : null}
                 </div>
