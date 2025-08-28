@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import colors from "tailwindcss/colors";
 
 export default {
   content: [
@@ -16,14 +15,12 @@ export default {
         400: "#343a40",
         300: "#868e96",
       },
-      white: colors.white,
-      blue: colors.blue,
-      red: colors.red
-
+      "primary": "#09381F",
+      "secondary": "#E6D4E6",
+      background: "#FAEBF4",
     },
     extend: {
       colors: {
-        background: "var(--background)",
         foreground: "var(--foreground)",
       },
       aspectRatio: {

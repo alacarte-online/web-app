@@ -1,62 +1,58 @@
 "use client";
 
-import { LargeRecipeImage, SmallRecipeImage } from "@/app/ui/content/recipe-image";
+import { LargeRecipeImage } from "@/app/ui/content/recipe-image";
 import React from 'react';
 import {RecipeOverview} from "@/app/lib/recipeOverview";
 import Link from "next/link";
-import {RecipeIcons} from "@/app/ui/navigation/recipe-icons";
+import {Card} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import {SaveButton} from "@/app/ui/buttons/saveButton";
 
-export type RecipeCardData = {
+export type RecipeCardProps = {
     recipe: RecipeOverview,
-    byCurrentUser: boolean
+    style?: string,
+    saveButtonProps?: RecipeCardSaveButtonProps
 }
 
-export function RecipeCardSmall({data}: { data: RecipeCardData }) {
-    return (
-        <div className="flex flex-row w-full bg-blackboard-500">
-            <SmallRecipeImage recipe={data.recipe} />
-            <Body data={data} />
-        </div>
-    )
+export type RecipeCardSaveButtonProps = {
+    onSave?: (state: boolean) => void;
 }
 
-export function RecipeCardLarge({data, onOptionsClick, onRecipeSaved}: { data: RecipeCardData, onOptionsClick?: () => void, onRecipeSaved?: (recipeId: number, isSaved: boolean) => void }) {
+export function RecipeCardLarge({recipe, style, saveButtonProps}: RecipeCardProps) {
     return (
-        <div className="flex flex-col">
-            <Link href={"/recipes/" + data.recipe.recipe_id}>
-                <LargeRecipeImage recipe_name={data.recipe.recipe_name} image_uri={data.recipe.image_uri}/>
-            </Link>
-            <Body data={data} onOptionsClick={onOptionsClick} onRecipeSaved={onRecipeSaved} />
-        </div>
-
+        <Card sx={{bgcolor: 'secondary.main', color: 'primary.main', borderColor: 'primary.main'}} className={`border-[2px] ${style}`}>
+                <Link href={"/recipes/" + recipe.recipe_id}>
+                    <LargeRecipeImage recipe_name={recipe.recipe_name} image_uri={recipe.image_uri}/>
+                </Link>
+                <Body recipe={recipe} saveButtonProps={saveButtonProps} />
+        </Card>
 )
 }
 
-function Body({data, onOptionsClick, onRecipeSaved}: { data: RecipeCardData, onOptionsClick?: () => void, onRecipeSaved?: (recipeId: number, isSaved: boolean) => void }) {
+function Body({recipe, saveButtonProps}: RecipeCardProps) {
     return (
-        <div className="flex flex-row justify-between items-start">
-            <Link href={"/recipes/" + data.recipe.recipe_id}>
-                <RecipeInfo data={data} />
+        <div className="flex flex-row justify-between items-center p-1 px-3">
+            <Link href={"/recipes/" + recipe.recipe_id}>
+                <RecipeInfo recipe={recipe} />
             </Link>
-            <RecipeIcons recipe_id={data.recipe.recipe_id} styling={"p-2 pt-6"} onOptionsClick={onOptionsClick} onRecipeSaved={onRecipeSaved} />
+            {saveButtonProps && <SaveButton recipeId={recipe.recipe_id} onToggle={saveButtonProps.onSave} />}
         </div>
     )
 }
 
-function RecipeInfo({data}: { data: RecipeCardData }) {
+function RecipeInfo({recipe}: { recipe: RecipeOverview }) {
     return (
         <div className="flex grow space-x-2">
-            <RecipeText data={data} />
+            <RecipeText recipe={recipe} />
         </div>
     )
 }
 
-function RecipeText({data}: { data: RecipeCardData }) {
+function RecipeText({recipe}: { recipe: RecipeOverview }) {
     return (
-        <div className="flex flex-col">
-          <h3 className="text-lg">{data.recipe.recipe_name}</h3>
-          <p>{data.recipe.brief_description}</p>
-          <p>{data.recipe.user_name}</p>
-        </div>
+        <Typography component="div" className="flex flex-col">
+          <h3 className="text-2xl font-medium">{recipe.recipe_name}</h3>
+          <p>{recipe.user_name}</p>
+        </Typography>
     )
 }

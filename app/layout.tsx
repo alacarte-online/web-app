@@ -1,29 +1,30 @@
 "use client";
 
-import localFont from "next/font/local";
 import "./globals.css";
-import {MenuBarHorizontal} from "@/app/ui/navigation/menu-bar-horizontal";
+import MenuBarHorizontal from "@/app/ui/navigation/menu-bar-horizontal";
 import {useEffect, useState} from "react";
-import {MenuBarVertical} from "@/app/ui/navigation/menu-bar-vertical";
+import DesktopAppBar from "@/app/ui/navigation/desktopAppBar";
+import {AppRouterCacheProvider} from '@mui/material-nextjs/v15-appRouter';
+import {theme} from "@/app/theme";
+import {styled, ThemeProvider} from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import {Oswald} from 'next/font/google';
 
-const excalifont = localFont({
-    src: [
-        {
-            path: "../public/fonts/Excalifont-Regular.woff2",
-            weight: "400",
-            style: "normal"
-        }
-    ],
-    variable: "--font-excalifont",
-});
+const oswald = Oswald({
+    subsets: ['latin'],
+})
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
+                                       children,
+                                   }: Readonly<{
+    children: React.ReactNode;
 }>) {
     const isDesktopWidth = 800;
     const [isDesktop, setDesktop] = useState(false);
+
+    const DesktopToolbarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
+    const defaultMobileBottomNavHeight: string = '49px';
+    const MobileBottomNavigationOffset = styled('div')({ height: defaultMobileBottomNavHeight });
 
     const updateMedia = () => {
         setDesktop(window.innerWidth > isDesktopWidth);
@@ -34,44 +35,44 @@ export default function RootLayout({
         return () => window.removeEventListener("resize", updateMedia);
     }, [setDesktop]);
 
-  return (
-    <html lang="en">
-    <head>
-        <title>
-            Alacarte
-        </title>
-        <link
-            rel="icon"
-            href="/icon?<generated>"
-            type="image/<generated>"
-            sizes="<generated>"
-        />
-    </head>
-    <body
-        id="root" className={`${excalifont.className} antialiased m-2 max-w-screen bg-blackboard-500`}
-      >
-      <TitleBar isDesktop={isDesktop}/>
-      <div className={`flex ${isDesktop ? `flex-row` : `flex-col`}`}>
-          {isDesktop ? <MenuBarVertical/> : null}
-
-          <div className="overflow-y-auto flex-col">
-              {children}
-          </div>
-
-          {!isDesktop ?
-              <div className="sticky bottom-0 w-full">
-                  <MenuBarHorizontal/>
-              </div> : null}
-      </div>
-      </body>
-    </html>
-  );
-}
-
-function TitleBar({isDesktop}: {isDesktop: boolean}) {
     return (
-        <div className={`${isDesktop ? `` : `hidden`} w-screen text-4xl p-2 ml-2 mb-2`}>
-            Alacarte
-        </div>
-    )
+        <html lang={`en ${oswald.className}`}>
+        <head>
+            <title>
+                Alacarte
+            </title>
+            <link
+                rel="icon"
+                href="/icon?<generated>"
+                type="image/<generated>"
+                sizes="<generated>"
+            />
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+        </head>
+        <body
+            id="root" className="antialiased m-2 max-w-screen bg-background dark:bg-primary"
+        >
+        <AppRouterCacheProvider options={{enableCssLayer: true}}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline enableColorScheme/>
+                <div className={`flex ${isDesktop ? `flex-row` : `flex-col`}`}>
+                    {isDesktop ? <DesktopAppBar/> : null}
+
+                    <div className="overflow-y-auto flex-col">
+                        {isDesktop ? <DesktopToolbarOffset /> : null}
+                        {children}
+                    </div>
+
+                    {!isDesktop ?
+                        <div className="bottom-0 w-full">
+                            <MobileBottomNavigationOffset />
+                            <MenuBarHorizontal/>
+                        </div> : null}
+                </div>
+            </ThemeProvider>
+        </AppRouterCacheProvider>
+        </body>
+        </html>
+    );
 }

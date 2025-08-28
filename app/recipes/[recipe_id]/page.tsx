@@ -4,7 +4,8 @@ import {Ingredient} from "@/app/lib/ingredient";
 import DOMPurify from "isomorphic-dompurify";
 
 import showdown from "showdown";
-import {RecipeIcons} from "@/app/ui/navigation/recipe-icons";
+import Typography from "@mui/material/Typography";
+import {SaveButton} from "@/app/ui/buttons/saveButton";
 
 export const dynamic = 'force-dynamic'
 
@@ -27,9 +28,9 @@ function RecipePageInternal({recipe_details}: { recipe_details: RecipeDetails })
 function RecipeOverview({recipe_details}: { recipe_details: RecipeDetails }) {
     return (
         <div className="flex flex-col gap-1">
-            <h2 className="text-2xl">{recipe_details.recipe_name}</h2>
-            <p>{recipe_details.brief_description}</p>
-            <p>{recipe_details.user_name}</p>
+            <Typography variant="h4" component="div" sx={{color: `primary.main`}}>{recipe_details.recipe_name}</Typography>
+            <Typography component="div" sx={{color: `primary.main`}}>{recipe_details.brief_description}</Typography>
+            <Typography component="div" sx={{color: `primary.main`}}>{recipe_details.user_name}</Typography>
             <RecipeThumbnail recipe_details={recipe_details}/>
         </div>
     )
@@ -44,7 +45,7 @@ function RecipeThumbnail({recipe_details}: { recipe_details: RecipeDetails }) {
 function RecipeBody({recipe_details}: { recipe_details: RecipeDetails }) {
     return (
         <div className="flex flex-col gap-4">
-            <RecipeIcons recipe_id={recipe_details.recipe_id} />
+            <SaveButton recipeId={recipe_details.recipe_id} />
             <IngredientsList ingredients={recipe_details.ingredients} />
             <Method recipe_details={recipe_details}/>
         </div>
@@ -54,7 +55,7 @@ function RecipeBody({recipe_details}: { recipe_details: RecipeDetails }) {
 function IngredientsList({ingredients}: { ingredients: Ingredient[] }) {
     return (
         <div className="flex flex-col w-full">
-            <h3 className="text-lg">Ingredients</h3>
+            <Typography variant="h6" component="div" sx={{color: `primary.main`}}>Ingredients</Typography>
             {ingredients.map(ingredient => <IngredientEntry key={ingredient.ingredient_id} ingredient={ingredient} />)}
         </div>
     )
@@ -63,8 +64,8 @@ function IngredientsList({ingredients}: { ingredients: Ingredient[] }) {
 function IngredientEntry({ingredient} : {ingredient: Ingredient}) {
     return (
         <div className="flex flex-row gap-2">
-            <div>{ingredient.amount}</div>
-            <div>{ingredient.ingredient_name}</div>
+            <Typography component="div" sx={{color: `primary.main`}}>{ingredient.amount}</Typography>
+            <Typography component="div" sx={{color: `primary.main`}}>{ingredient.ingredient_name}</Typography>
         </div>
     )
 }
@@ -76,8 +77,8 @@ function Method({recipe_details}: { recipe_details: RecipeDetails }) {
 
     return (
         <div className="flex flex-col w-full">
-            <h3 className="text-lg">Method</h3>
-            <div className="content" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}} />
+            <Typography variant="h6" component="div" sx={{color: `primary.main`}}>Method</Typography>
+            <Typography sx={{color: `primary.main`}} component="div" className="content" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}} />
         </div>
     )
 }
