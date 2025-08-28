@@ -131,7 +131,7 @@ export default function DesktopAppBar() {
     return (
         <Box sx={{ display: 'flex' }}>
             <AppBar open={open} sx={{bgcolor: 'secondary.main', color: 'primary.main'}}>
-                <Toolbar className="gap-4 border-b-[2px] border-blackboard-500">
+                <Toolbar sx={{borderColor: 'primary'}} className="gap-4 border-b-[2px]">
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"

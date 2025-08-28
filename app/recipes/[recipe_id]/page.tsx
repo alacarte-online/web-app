@@ -28,9 +28,9 @@ function RecipePageInternal({recipe_details}: { recipe_details: RecipeDetails })
 function RecipeOverview({recipe_details}: { recipe_details: RecipeDetails }) {
     return (
         <div className="flex flex-col gap-1">
-            <Typography variant="h4" component="div" className="text-primary">{recipe_details.recipe_name}</Typography>
-            <Typography component="div" className="text-primary">{recipe_details.brief_description}</Typography>
-            <Typography component="div" className="text-primary">{recipe_details.user_name}</Typography>
+            <Typography variant="h4" component="div" sx={{color: `primary.main`}}>{recipe_details.recipe_name}</Typography>
+            <Typography component="div" sx={{color: `primary.main`}}>{recipe_details.brief_description}</Typography>
+            <Typography component="div" sx={{color: `primary.main`}}>{recipe_details.user_name}</Typography>
             <RecipeThumbnail recipe_details={recipe_details}/>
         </div>
     )
@@ -55,7 +55,7 @@ function RecipeBody({recipe_details}: { recipe_details: RecipeDetails }) {
 function IngredientsList({ingredients}: { ingredients: Ingredient[] }) {
     return (
         <div className="flex flex-col w-full">
-            <Typography variant="h6" component="div" className="text-primary">Ingredients</Typography>
+            <Typography variant="h6" component="div" sx={{color: `primary.main`}}>Ingredients</Typography>
             {ingredients.map(ingredient => <IngredientEntry key={ingredient.ingredient_id} ingredient={ingredient} />)}
         </div>
     )
@@ -64,8 +64,8 @@ function IngredientsList({ingredients}: { ingredients: Ingredient[] }) {
 function IngredientEntry({ingredient} : {ingredient: Ingredient}) {
     return (
         <div className="flex flex-row gap-2">
-            <Typography component="div" className="text-primary">{ingredient.amount}</Typography>
-            <Typography component="div" className="text-primary">{ingredient.ingredient_name}</Typography>
+            <Typography component="div" sx={{color: `primary.main`}}>{ingredient.amount}</Typography>
+            <Typography component="div" sx={{color: `primary.main`}}>{ingredient.ingredient_name}</Typography>
         </div>
     )
 }
@@ -77,8 +77,8 @@ function Method({recipe_details}: { recipe_details: RecipeDetails }) {
 
     return (
         <div className="flex flex-col w-full">
-            <Typography variant="h6" component="div" className="text-primary">Method</Typography>
-            <Typography component="div" className="content text-primary" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}} />
+            <Typography variant="h6" component="div" sx={{color: `primary.main`}}>Method</Typography>
+            <Typography sx={{color: `primary.main`}} component="div" className="content" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}} />
         </div>
     )
 }

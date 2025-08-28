@@ -20,7 +20,7 @@ export type RecipeCardSaveButtonProps = {
 
 export function RecipeCardLarge({recipe, style, saveButtonProps}: RecipeCardProps) {
     return (
-        <Card className={`border-[2px] border-primary bg-secondary text-primary ${style}`}>
+        <Card sx={{bgcolor: 'secondary.main', color: 'primary.main', borderColor: 'primary.main'}} className={`border-[2px] ${style}`}>
                 <Link href={"/recipes/" + recipe.recipe_id}>
                     <LargeRecipeImage recipe_name={recipe.recipe_name} image_uri={recipe.image_uri}/>
                 </Link>

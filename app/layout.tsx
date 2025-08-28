@@ -51,7 +51,7 @@ export default function RootLayout({
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
         </head>
         <body
-            id="root" className="antialiased m-2 max-w-screen bg-background"
+            id="root" className="antialiased m-2 max-w-screen bg-background dark:bg-primary"
         >
         <AppRouterCacheProvider options={{enableCssLayer: true}}>
             <ThemeProvider theme={theme}>
