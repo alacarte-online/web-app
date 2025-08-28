@@ -19,7 +19,7 @@ export default function MenuBarHorizontal() {
     const icons = [savedIconDetails, browseIconDetails]
     return (
         <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-            <BottomNavigation>
+            <BottomNavigation sx={{color: 'primary.main', bgcolor: 'secondary.main'}}>
                 {icons.map(details => (
                     <BottomNavigationAction
                         key={details.name}
