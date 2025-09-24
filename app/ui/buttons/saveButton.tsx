@@ -3,31 +3,40 @@
 import {ToggleButtonWithIconComponent} from "@/app/ui/buttons/toggleButton";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import {IRecipeSaver, RecipeSaver} from "@/app/lib/recipeSaver";
-import React from "react";
+import React, { useContext } from "react";
+import {SavedRecipesContext, SavedRecipesDispatchContext} from "@/app/lib/recipeSaving/recipeSavingContext";
 
 type SaveButtonProps = {
     recipeId: number,
     onToggle?: (state: boolean) => void,
+    useSecondaryColor?: boolean
 }
 
-const recipeSaver: IRecipeSaver = RecipeSaver;
+export const SaveButton = ({recipeId, onToggle, useSecondaryColor} : SaveButtonProps) => {
+    const savedRecipes = useContext(SavedRecipesContext);
+    const savedRecipesDispatch = useContext(SavedRecipesDispatchContext);
 
-export const SaveButton = ({recipeId, onToggle} : SaveButtonProps) => {
     const DisabledSaveIcon = () => (
-        <FavoriteBorderIcon color="primary" sx={{fontSize: "40px"}} />
+        <FavoriteBorderIcon color={useSecondaryColor ? "secondary" : "primary"} sx={{fontSize: "40px"}} />
     )
 
     const EnabledSaveIcon = () => (
-        <FavoriteIcon color="primary" sx={{fontSize: "40px"}} />
+        <FavoriteIcon color={useSecondaryColor ? "secondary" : "primary"} sx={{fontSize: "40px"}} />
     )
 
-    const OnSaveToggled = (state: boolean) => {
-        if(state) {
-            recipeSaver.saveRecipe(recipeId)
+    // Ensure we don't get hydration errors
+    const [isClient, setIsClient] = React.useState(false)
+    React.useEffect(() => {
+        setIsClient(true)
+    }, [])
+
+    const state = savedRecipes.has(recipeId);
+    const OnSaveToggled = () => {
+        if(!state) {
+            savedRecipesDispatch({type: 'saved', recipe: recipeId})
         }
         else {
-            recipeSaver.removeRecipe(recipeId)
+            savedRecipesDispatch({type: 'unsaved', recipe: recipeId})
         }
         if(onToggle) {
             onToggle(state)
@@ -38,8 +47,8 @@ export const SaveButton = ({recipeId, onToggle} : SaveButtonProps) => {
         <ToggleButtonWithIconComponent
             DisabledIcon={DisabledSaveIcon}
             EnabledIcon={EnabledSaveIcon}
-            initialState={recipeSaver.isRecipeSaved(recipeId)}
-            onToggle={OnSaveToggled}
+            state={state && isClient}
+            onClick={OnSaveToggled}
         />
     );
 };
