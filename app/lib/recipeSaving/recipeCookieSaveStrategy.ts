@@ -1,4 +1,4 @@
-import {IRecipeSaveStrategy} from "@/app/lib/recipeSaver";
+import {IRecipeSaveStrategy} from "@/app/lib/recipeSaving/recipeSaver";
 import Cookie from "js-cookie";
 
 export class RecipeCookieSaveStrategy implements IRecipeSaveStrategy {

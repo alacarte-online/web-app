@@ -1,6 +1,7 @@
 import { RecipeCookieSaveStrategy } from "./recipeCookieSaveStrategy";
 
 export interface IRecipeSaver {
+    getSavedRecipes(): Set<number>;
     isRecipeSaved(recipe_id: number) : boolean;
     saveRecipe(recipe_id: number) : void;
     removeRecipe(recipe_id: number) : void;
@@ -22,6 +23,10 @@ class RecipeSaverInternal implements IRecipeSaver {
         this.saveStrategy = saveStrategy;
         this.onRecipeSaved = onRecipeSaved;
         this.savedRecipes = saveStrategy.loadRecipes()
+    }
+
+    getSavedRecipes(): Set<number> {
+        return this.savedRecipes;
     }
 
     isRecipeSaved(recipe_id: number): boolean {
