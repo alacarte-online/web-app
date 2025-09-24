@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import {useState} from "react";
-import {RecipeOverview} from "@/app/lib/recipeOverview";
 
 export function LargeRecipeImage({recipe_name, image_uri}: { recipe_name: string, image_uri: string }) {
     const fallbackSrc = "/images/error.png"
