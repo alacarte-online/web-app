@@ -59,7 +59,7 @@ export default function RootLayout({
                 <div className={`flex ${isDesktop ? `flex-row` : `flex-col`}`}>
                     {isDesktop ? <DesktopAppBar/> : null}
 
-                    <div className="overflow-y-auto flex-col">
+                    <div className="overflow-y-auto flex-col w-full">
                         {isDesktop ? <DesktopToolbarOffset /> : null}
                         {children}
                     </div>
