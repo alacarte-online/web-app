@@ -6,11 +6,14 @@ import {Card} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {RecipeOverview} from "@/app/lib/recipeOverview";
 import {SavedRecipesContext, SavedRecipesContextProvider} from "@/app/lib/recipeSaving/recipeSavingContext";
+import {MealPlanContext} from "@/app/lib/mealPlanning/mealPlanContext";
 
 export function SavedRecipesCardList({initialRecipes}: { initialRecipes: RecipeOverview[] }) {
     return (
         <SavedRecipesContextProvider>
-            <RecipeList recipes={initialRecipes}/>
+            <MealPlanContext>
+                <RecipeList recipes={initialRecipes}/>
+            </MealPlanContext>
         </SavedRecipesContextProvider>
     );
 }
