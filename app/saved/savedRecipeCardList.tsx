@@ -1,43 +1,46 @@
 "use client";
 
-import {RecipeCardLarge, RecipeCardSaveButtonProps} from "@/app/ui/content/recipe-card";
-import React, {useState} from "react";
+import {OptionsButtonProps, RecipeCardLarge} from "@/app/ui/content/recipe-card";
+import React, {useContext} from "react";
 import {Card} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {RecipeOverview} from "@/app/lib/recipeOverview";
+import {SavedRecipesContext, SavedRecipesContextProvider} from "@/app/lib/recipeSaving/recipeSavingContext";
 
 export function SavedRecipesCardList({initialRecipes}: { initialRecipes: RecipeOverview[] }) {
-    const [displayedRecipeCount, setDisplayedRecipeCount] = useState(initialRecipes.length);
     return (
-        <div className="flex flex-col gap-2">
-            {displayedRecipeCount > 0 ?
-                <RecipeList recipes={initialRecipes} onRecipeHidden={() => setDisplayedRecipeCount(displayedRecipeCount - 1)} /> :
-                <EmptyRecipeDisplay />
-            }
-        </div>
+        <SavedRecipesContextProvider>
+            <RecipeList recipes={initialRecipes}/>
+        </SavedRecipesContextProvider>
     );
 }
 
-function HideableRecipeCard({recipe, onRecipeHidden}: {recipe: RecipeOverview, onRecipeHidden: () => void}) {
-    const [isSaved, setSaved] = useState(true);
-    const onSaved = (state: boolean) => {
-        setSaved(state);
-        if(!state) {
-            onRecipeHidden();
-        }
-    }
-    const recipeCardSaveButtonProps: RecipeCardSaveButtonProps = {
-        onSave: onSaved
-    }
+function RecipeList({recipes}: {recipes: RecipeOverview[]}) {
+    // Ensure we don't get hydration errors
+    const [isClient, setIsClient] = React.useState(false)
+    React.useEffect(() => {
+        setIsClient(true)
+    }, [])
+    const savedRecipes = useContext(SavedRecipesContext);
     return (
-        <RecipeCardLarge recipe={recipe} style={isSaved ? "" : "hidden"} saveButtonProps={recipeCardSaveButtonProps} />
+        <div>
+            { savedRecipes.size > 0 && isClient ? <PopulatedRecipeList recipes={recipes} savedRecipes={savedRecipes} /> : <EmptyRecipeDisplay /> }
+        </div>
     )
 }
 
-function RecipeList({recipes, onRecipeHidden}: {recipes: RecipeOverview[], onRecipeHidden: () => void}) {
+function PopulatedRecipeList({recipes, savedRecipes}: {recipes: RecipeOverview[], savedRecipes: Set<number>}) {
+    const optionsButtonProps: OptionsButtonProps = {enableAddToPlan: true}
     return (
         <div className="flex flex-col gap-2 grow md:grid md:grid-cols-2 lg:grid-cols-3">
-            { recipes.map((recipe, count) => <HideableRecipeCard recipe={recipe} onRecipeHidden={onRecipeHidden} key={count} />)}
+            {recipes.map((recipe, count) =>
+                <RecipeCardLarge
+                    recipe={recipe}
+                    style={savedRecipes.has(recipe.recipe_id) ? "" : "hidden"}
+                    saveButtonProps={{}}
+                    optionsButtonProps={optionsButtonProps}
+                    key={count}
+                />)}
         </div>
     )
 }
