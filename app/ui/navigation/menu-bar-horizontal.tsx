@@ -5,6 +5,8 @@ import Paper from '@mui/material/Paper';
 import {usePathname} from "next/navigation";
 import {MagnifyingGlassIcon} from "@/app/ui/icons/magnifyingGlass";
 import {HeartIconOutline, HeartIconSolid} from "@/app/ui/icons/heart";
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import {ReactNode} from "react";
 import Link from 'next/link';
 
@@ -13,10 +15,12 @@ export default function MenuBarHorizontal() {
     const pathname = usePathname()
     const browseIcon = <MagnifyingGlassIcon />
     const savedIcon = pathname.startsWith("/saved") ? <HeartIconSolid /> : <HeartIconOutline />;
+    const weekIcon = pathname.startsWith("/week") ? <CalendarTodayIcon /> : <CalendarTodayOutlinedIcon />;
     const browseIconDetails: iconDetails = {name: "browse", displayText: "Browse", icon: browseIcon, linkUrl: "/browse"}
     const savedIconDetails: iconDetails = {name: "saved", displayText: "Saved", icon: savedIcon, linkUrl: "/saved"}
+    const weekIconDetails: iconDetails = {name: "week", displayText: "Plan", icon: weekIcon, linkUrl: "/week"}
 
-    const icons = [savedIconDetails, browseIconDetails]
+    const icons = [savedIconDetails, browseIconDetails, weekIconDetails]
     return (
         <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
             <BottomNavigation sx={{color: 'primary.main', bgcolor: 'secondary.main'}}>

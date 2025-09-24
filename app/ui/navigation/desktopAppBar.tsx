@@ -21,6 +21,8 @@ import {usePathname} from "next/navigation";
 import {ReactNode} from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 const drawerWidth = 220;
 
@@ -99,12 +101,16 @@ export default function DesktopAppBar() {
     const pathname = usePathname()
     const browseIcon = <MagnifyingGlassIcon />
     const savedIcon = pathname.startsWith("/saved") ? <HeartIconSolid /> : <HeartIconOutline />;
+    const weekIcon = pathname.startsWith("/week") ? <CalendarTodayIcon /> : <CalendarTodayOutlinedIcon />;
     const browseIconDetails: iconDetails = {name: "browse", displayText: "Browse", icon: browseIcon, linkUrl: "/browse"}
     const savedIconDetails: iconDetails = {name: "saved", displayText: "Saved", icon: savedIcon, linkUrl: "/saved"}
+    const weekIconDetails: iconDetails = {name: "week", displayText: "Plan", icon: weekIcon, linkUrl: "/week"}
 
+    // TODO awful...
     const [selected, setSelected] = React.useState(
             pathname.startsWith(browseIconDetails.linkUrl) ? browseIconDetails.name :
-                pathname.startsWith(savedIconDetails.linkUrl) ? savedIconDetails.name : ""
+                pathname.startsWith(savedIconDetails.linkUrl) ? savedIconDetails.name :
+                    pathname.startsWith(weekIconDetails.linkUrl) ? weekIconDetails.name : ""
     );
 
     const handleDrawerOpen = () => {
@@ -175,7 +181,7 @@ export default function DesktopAppBar() {
                         </IconButton>
                     </DrawerHeader>
                     <List>
-                        {[browseIconDetails, savedIconDetails].map(iconDetails => (
+                        {[browseIconDetails, savedIconDetails, weekIconDetails].map(iconDetails => (
                             <ListItem key={iconDetails.linkUrl} disablePadding sx={{ display: 'block'}}>
                                 <Link href={iconDetails.linkUrl}>
                                     <ListItemButton
