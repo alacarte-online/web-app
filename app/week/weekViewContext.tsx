@@ -6,8 +6,7 @@ import React, {
     createContext,
     Dispatch,
     ReactNode,
-    useContext,
-    useEffect,
+    useContext, useEffect,
     useReducer
 } from "react";
 import {CurrentWeekMealPlanner, IWeeklyMealPlanner} from "@/app/lib/mealPlanning/weeklyMealPlanner";
@@ -18,7 +17,7 @@ import { MealPlanContext } from "../lib/mealPlanning/mealPlanContext";
 export type MealData = {
     id: number;
     recipe_id: number;
-    status: 'unloaded' | 'loaded';
+    status: 'unloaded' | 'fetching' | 'loaded';
     recipe_name: string | null;
     user_name: string | null;
     image_uri: string | null;
@@ -56,9 +55,13 @@ export default function WeekPlanProvider({children}: {children: ReactNode}) {
         weekData.days
             .flatMap(day => day.meals)
             .map(meal => {
-                fetchMeal(meal).then(meal => dispatch({type: 'loaded', meal: meal}))
+                if(meal.status == 'unloaded') {
+                    console.log("trigger")
+                    meal.status = 'fetching';
+                    fetchMeal(meal).then(meal => dispatch({type: 'loaded', meal: meal}))
+                }
             })
-    }, []);
+    }, [weekData]);
 
     return (
         <MealPlanContext>
