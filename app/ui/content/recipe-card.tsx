@@ -7,35 +7,50 @@ import Link from "next/link";
 import {Card} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {SaveButton} from "@/app/ui/buttons/saveButton";
+import RecipeCardOptions from "@/app/ui/content/recipeCardOptions";
 
 export type RecipeCardProps = {
     recipe: RecipeOverview,
     style?: string,
-    saveButtonProps?: RecipeCardSaveButtonProps
+    saveButtonProps?: RecipeCardSaveButtonProps,
+    optionsButtonProps?: OptionsButtonProps
 }
 
 export type RecipeCardSaveButtonProps = {
     onSave?: (state: boolean) => void;
 }
 
-export function RecipeCardLarge({recipe, style, saveButtonProps}: RecipeCardProps) {
+export type OptionsButtonProps = {
+    enableAddToPlan?: boolean;
+}
+
+export function RecipeCardLarge({recipe, style, saveButtonProps, optionsButtonProps}: RecipeCardProps) {
     return (
         <Card sx={{bgcolor: 'secondary.main', color: 'primary.main', borderColor: 'primary.main'}} className={`border-[2px] ${style}`}>
                 <Link href={"/recipes/" + recipe.recipe_id}>
                     <LargeRecipeImage recipe_name={recipe.recipe_name} image_uri={recipe.image_uri}/>
                 </Link>
-                <Body recipe={recipe} saveButtonProps={saveButtonProps} />
+                <Body recipe={recipe} saveButtonProps={saveButtonProps} optionsButtonProps={optionsButtonProps} />
         </Card>
 )
 }
 
-function Body({recipe, saveButtonProps}: RecipeCardProps) {
+function Body({recipe, saveButtonProps, optionsButtonProps}: RecipeCardProps) {
     return (
         <div className="flex flex-row justify-between items-center p-1 px-3">
             <Link href={"/recipes/" + recipe.recipe_id}>
                 <RecipeInfo recipe={recipe} />
             </Link>
-            {saveButtonProps && <SaveButton recipeId={recipe.recipe_id} onToggle={saveButtonProps.onSave} />}
+            <ButtonTray recipe={recipe} saveButtonProps={saveButtonProps} optionsButtonProps={optionsButtonProps} />
+        </div>
+    )
+}
+
+function ButtonTray({recipe, saveButtonProps, optionsButtonProps}: RecipeCardProps) {
+    return (
+        <div className="flex flex-row items-center gap-2">
+            {saveButtonProps && <SaveButton recipeId={recipe.recipe_id} onToggle={saveButtonProps.onSave}/>}
+            {optionsButtonProps && <RecipeCardOptions recipe={recipe.recipe_id} optionsProps={optionsButtonProps}/>}
         </div>
     )
 }
@@ -43,7 +58,7 @@ function Body({recipe, saveButtonProps}: RecipeCardProps) {
 function RecipeInfo({recipe}: { recipe: RecipeOverview }) {
     return (
         <div className="flex grow space-x-2">
-            <RecipeText recipe={recipe} />
+            <RecipeText recipe={recipe}/>
         </div>
     )
 }
