@@ -6,6 +6,9 @@ import DOMPurify from "isomorphic-dompurify";
 import showdown from "showdown";
 import Typography from "@mui/material/Typography";
 import {SaveButton} from "@/app/ui/buttons/saveButton";
+import {SavedRecipesContextProvider} from "@/app/lib/recipeSaving/recipeSavingContext";
+import RecipeCardOptions from "@/app/ui/content/recipeCardOptions";
+import {MealPlanContext} from "@/app/lib/mealPlanning/mealPlanContext";
 
 export const dynamic = 'force-dynamic'
 
@@ -18,17 +21,21 @@ export default async function RecipePage({ params }: { params: Promise<{ recipe_
 
 function RecipePageInternal({recipe_details}: { recipe_details: RecipeDetails }) {
     return (
-        <div className="flex flex-col max-w-screen-md m-auto gap-4">
-            <RecipeOverview recipe_details={recipe_details}/>
-            <RecipeBody recipe_details={recipe_details}/>
-        </div>
+        <SavedRecipesContextProvider>
+            <MealPlanContext>
+                <div className="flex flex-col max-w-screen-md m-auto gap-4">
+                    <RecipeOverview recipe_details={recipe_details}/>
+                    <RecipeBody recipe_details={recipe_details}/>
+                </div>
+            </MealPlanContext>
+        </SavedRecipesContextProvider>
     )
 }
 
 function RecipeOverview({recipe_details}: { recipe_details: RecipeDetails }) {
     return (
         <div className="flex flex-col gap-1">
-            <Typography variant="h4" component="div" sx={{color: `primary.main`}}>{recipe_details.recipe_name}</Typography>
+        <Typography variant="h4" component="div" sx={{color: `primary.main`}}>{recipe_details.recipe_name}</Typography>
             <Typography component="div" sx={{color: `primary.main`}}>{recipe_details.brief_description}</Typography>
             <Typography component="div" sx={{color: `primary.main`}}>{recipe_details.user_name}</Typography>
             <RecipeThumbnail recipe_details={recipe_details}/>
@@ -45,7 +52,10 @@ function RecipeThumbnail({recipe_details}: { recipe_details: RecipeDetails }) {
 function RecipeBody({recipe_details}: { recipe_details: RecipeDetails }) {
     return (
         <div className="flex flex-col gap-4">
-            <SaveButton recipeId={recipe_details.recipe_id} />
+            <div className="flex flex-row gap-4">
+                <SaveButton recipeId={recipe_details.recipe_id} />
+                <RecipeCardOptions recipe={recipe_details.recipe_id} optionsProps={{enableAddToPlan: true}} />
+            </div>
             <IngredientsList ingredients={recipe_details.ingredients} />
             <Method recipe_details={recipe_details}/>
         </div>
