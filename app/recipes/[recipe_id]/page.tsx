@@ -9,14 +9,29 @@ import {SaveButton} from "@/app/ui/buttons/saveButton";
 import {SavedRecipesContextProvider} from "@/app/lib/recipeSaving/recipeSavingContext";
 import RecipeCardOptions from "@/app/ui/content/recipeCardOptions";
 import {MealPlanContext} from "@/app/lib/mealPlanning/mealPlanContext";
+import {apiClient} from "@/app/api/client";
 
 export const dynamic = 'force-dynamic'
 
+type RecipeResponse = RecipeDetails;
+
 export default async function RecipePage({ params }: { params: Promise<{ recipe_id: string }>}) {
-    const { recipe_id } = await params
-    const res = await fetch('https://api.alacarteonline.co.uk/recipe/' + recipe_id);
-    const recipe_details = await res.json()
-    return <RecipePageInternal recipe_details={recipe_details} />;
+    try {
+        const { recipe_id } = await params
+        const recipe = await apiClient.get<RecipeResponse>(`/recipe/${recipe_id}`).then((response) => response.data);
+        return <RecipePageInternal recipe_details={recipe} />;
+    } catch (error) {
+        console.error('Error getting recipe - ', error);
+        return <RecipeNotFound />
+    }
+}
+
+function RecipeNotFound() {
+    return (
+        <div>
+            <Typography>Recipe not found</Typography>
+        </div>
+    )
 }
 
 function RecipePageInternal({recipe_details}: { recipe_details: RecipeDetails }) {
