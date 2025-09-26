@@ -13,17 +13,25 @@ import {DayContext} from "@/app/week/dayView";
 import Link from "next/link";
 
 export function MealItem({mealData}: {mealData: MealData}) {
-    return (
-        mealData.status == 'loaded' ?
-            <LoadedMealItem
-                id={mealData.id}
-                recipe_id={mealData.recipe_id}
-                recipe_name={mealData.recipe_name ?? "missing recipe name"}
-                user_name={mealData.user_name ?? "missing user name"}
-                image_uri={mealData.image_uri ?? "missing image"}
-            /> :
-            <SkeletonMealItem />
-    )
+
+    switch (mealData.status) {
+        case 'unloaded':
+            return (<SkeletonMealItem />);
+        case 'fetching':
+            return (<SkeletonMealItem />);
+        case 'failed':
+            return;
+        case 'loaded':
+            return (
+                <LoadedMealItem
+                    id={mealData.id}
+                    recipe_id={mealData.recipe_id}
+                    recipe_name={mealData.recipe_name ?? "missing recipe name"}
+                    user_name={mealData.user_name ?? "missing user name"}
+                    image_uri={mealData.image_uri ?? "missing image"}
+                />
+            )
+    }
 }
 
 function LoadedMealItem({id, recipe_id, recipe_name, user_name, image_uri}: {id: number, recipe_id: number, recipe_name: string, user_name: string, image_uri: string}) {

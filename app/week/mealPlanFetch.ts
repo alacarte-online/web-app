@@ -1,8 +1,15 @@
 "use server"
 
 import {RecipeDetails} from "@/app/lib/recipeDetails";
+import {apiClient} from "@/app/api/client";
 
-export default async function fetchRecipe(id: number) : Promise<RecipeDetails> {
-    const res = await fetch('https://api.alacarteonline.co.uk/recipe/' + id);
-    return await res.json()
+type RecipeResponse = RecipeDetails;
+
+export default async function fetchRecipe(id: number) : Promise<RecipeDetails | null> {
+    try {
+        return await apiClient.get<RecipeResponse>(`/recipe/${id}`).then((response) => response.data);
+    } catch (error) {
+        console.error('Error getting recipe - ', error);
+        return null;
+    }
 }

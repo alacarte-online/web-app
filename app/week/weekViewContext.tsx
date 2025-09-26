@@ -17,7 +17,7 @@ import { MealPlanContext } from "../lib/mealPlanning/mealPlanContext";
 export type MealData = {
     id: number;
     recipe_id: number;
-    status: 'unloaded' | 'fetching' | 'loaded';
+    status: 'unloaded' | 'fetching' | 'loaded' | 'failed';
     recipe_name: string | null;
     user_name: string | null;
     image_uri: string | null;
@@ -113,11 +113,14 @@ async function fetchMeal(meal: MealData) : Promise<MealData> {
     if (meal.status === 'loaded') {
         return meal;
     }
-    console.log("fetching meal data ...");
-    await sleep(Math.random() * 1000);
-    console.log("fetched.");
 
     const mealDetails = await fetchRecipe(meal.recipe_id);
+
+    if(mealDetails == null) {
+        meal.status = 'failed';
+        return meal;
+    }
+
     meal.recipe_name = mealDetails.recipe_name;
     meal.user_name = mealDetails.user_name;
     meal.image_uri = mealDetails.image_uri;
