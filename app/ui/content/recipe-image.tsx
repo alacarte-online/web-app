@@ -6,7 +6,20 @@ import {apiClient} from "@/app/api/client";
 
 export function LargeRecipeImage({recipe_name, image_uri}: { recipe_name: string, image_uri: string }) {
     const fallbackSrc = "/images/error.png"
+    const missingSrc = "/images/missing.png"
     const [imageError, setImageError] = useState(false);
+
+    if(image_uri == null) {
+        return(
+            <Image
+                src={missingSrc}
+                alt="Missing image placeholder"
+                className='object-contain object-center aspect-recipe-card-large'
+                height={600}
+                width={600}
+            />
+        )
+    }
 
     return(
         <Image
