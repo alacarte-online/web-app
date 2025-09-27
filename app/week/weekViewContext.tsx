@@ -128,11 +128,6 @@ async function fetchMeal(meal: MealData) : Promise<MealData> {
     return meal;
 }
 
-// we want/ need a promise based sleep function
-async function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function weekDataHasRecipeForDay(weekData: WeekData, recipe: number, day: Day) {
     return weekData.days[day].meals.some(meal => meal.recipe_id == recipe);
 }
