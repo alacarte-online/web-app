@@ -7,6 +7,6 @@ export type RecipeDetails = {
     user_name: string,
     brief_description: string,
     image_uri: string,
-    method: string,
-    ingredients: Ingredient[]
+    method: string | null,
+    ingredients: Ingredient[] | null
 }

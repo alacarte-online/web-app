@@ -77,13 +77,19 @@ function RecipeBody({recipe_details}: { recipe_details: RecipeDetails }) {
     )
 }
 
-function IngredientsList({ingredients}: { ingredients: Ingredient[] }) {
+function IngredientsList({ingredients}: { ingredients: Ingredient[] | null }) {
     return (
         <div className="flex flex-col w-full">
             <Typography variant="h6" component="div" sx={{color: `primary.main`}}>Ingredients</Typography>
-            {ingredients.map(ingredient => <IngredientEntry key={ingredient.ingredient_id} ingredient={ingredient} />)}
+            <IngredientsBody ingredients={ingredients} />
         </div>
     )
+}
+
+function IngredientsBody({ingredients}: { ingredients: Ingredient[] | null }) {
+    if(ingredients == null)
+        return (<Typography>No ingredients provided</Typography>);
+    return (ingredients.map(ingredient => <IngredientEntry key={ingredient.ingredient_id} ingredient={ingredient} />));
 }
 
 function IngredientEntry({ingredient} : {ingredient: Ingredient}) {
@@ -96,14 +102,18 @@ function IngredientEntry({ingredient} : {ingredient: Ingredient}) {
 }
 
 function Method({recipe_details}: { recipe_details: RecipeDetails }) {
-    const converter = new showdown.Converter();
-    const text      = recipe_details.method;
-    const html      = converter.makeHtml(text);
-
     return (
         <div className="flex flex-col w-full">
             <Typography variant="h6" component="div" sx={{color: `primary.main`}}>Method</Typography>
-            <Typography sx={{color: `primary.main`}} component="div" className="content" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}} />
+            <MethodBody method={recipe_details.method} />
         </div>
     )
+}
+
+function MethodBody({method} : {method: string | null}) {
+    if (method == null)
+        return (<Typography>No method provided</Typography>);
+    const converter = new showdown.Converter();
+    const html      = converter.makeHtml(method);
+    return (<Typography sx={{color: `primary.main`}} component="div" className="content" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html)}} />);
 }
