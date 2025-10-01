@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
         pathname: '/image/**',
         search: ''
       },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8081',
+        pathname: '/image/**',
+        search: ''
+      }
     ],
   }
 };
